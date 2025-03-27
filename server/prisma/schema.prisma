@@ -1,0 +1,87 @@
+// prisma/schema.prisma
+
+// Specifies the database provider and connection URL (loaded from .env)
+datasource db {
+  provider = "postgresql" // Or your chosen provider
+  url      = env("DATABASE_URL")
+}
+
+// Specifies the client generator (generates the type-safe Prisma Client)
+generator client {
+  provider = "prisma-client-js"
+}
+
+// --- User Model ---
+// Stores information about registered users
+model User {
+  id        String   @id @default(cuid()) // Unique identifier for the user (using CUID)
+  email     String   @unique // User's email, must be unique
+  password  String   // Hashed password
+  createdAt DateTime @default(now()) // Timestamp when the user was created
+  updatedAt DateTime @updatedAt // Timestamp when the user was last updated
+
+  // Relation: A user can have many recipes
+  recipes Recipe[]
+}
+
+// --- Recipe Model ---
+// Stores the main details of a cooking recipe
+model Recipe {
+  id          String    @id @default(cuid()) // Unique identifier for the recipe
+  name        String    // Name of the recipe
+  description String?   // Optional longer description
+  imageUrl    String?   // Optional URL to an image for the recipe
+  createdAt   DateTime  @default(now()) // Timestamp when the recipe was created
+  updatedAt   DateTime  @updatedAt // Timestamp when the recipe was last updated
+  isPublic    Boolean   @default(false) // Flag to indicate if the recipe can be viewed publicly (for sharing)
+
+  // Relation: Each recipe belongs to one user
+  userId String // Foreign key referencing the User model
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade) // Define the relation, Cascade means delete recipes if user is deleted
+
+  // Relation: A recipe has many ingredients
+  ingredients Ingredient[]
+
+  // Relation: A recipe has many steps
+  steps Step[]
+
+  // Relation: A recipe can have many tags (Many-to-Many)
+  tags Tag[] @relation("RecipeTags") // Explicit relation name for clarity on many-to-many
+}
+
+// --- Ingredient Model ---
+// Stores individual ingredients required for a recipe
+model Ingredient {
+  id     String @id @default(cuid()) // Unique identifier for the ingredient entry
+  name   String // Name of the ingredient (e.g., "Flour", "Sugar")
+  measure String // Measurement and unit (e.g., "2 cups", "1 tbsp", "100g")
+
+  // Relation: Each ingredient belongs to one recipe
+  recipeId String // Foreign key referencing the Recipe model
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade) // Define the relation, Cascade means delete ingredient if recipe is deleted
+}
+
+// --- Step Model ---
+// Stores individual steps in the recipe instructions
+model Step {
+  id          String @id @default(cuid()) // Unique identifier for the step
+  order       Int    // Number indicating the order of the step (e.g., 1, 2, 3)
+  description String // Text describing the step
+
+  // Relation: Each step belongs to one recipe
+  recipeId String // Foreign key referencing the Recipe model
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade) // Define the relation, Cascade means delete step if recipe is deleted
+
+  // Add an index to potentially speed up fetching steps in order for a specific recipe
+  @@index([recipeId, order])
+}
+
+// --- Tag Model ---
+// Stores tags that can be applied to recipes (e.g., "Vegan", "Quick", "Dessert")
+model Tag {
+  id   String @id @default(cuid()) // Unique identifier for the tag
+  name String @unique // Name of the tag, must be unique
+
+  // Relation: A tag can be applied to many recipes (Many-to-Many)
+  recipes Recipe[] @relation("RecipeTags") // Explicit relation name for clarity on many-to-many
+}
