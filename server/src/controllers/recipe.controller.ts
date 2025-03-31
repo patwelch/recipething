@@ -314,7 +314,7 @@ export const searchRecipes = async (req: Request, res: Response, next: NextFunct
         if (tagNames.length > 0) {
             // Find recipes where ALL specified tags are present
             whereClause.tags = {
-                every: { // Use 'some' if you want recipes matching ANY of the tags
+                some: { // Use 'some' if you want recipes matching ANY of the tags
                     name: {
                         in: tagNames,
                         mode: 'insensitive',

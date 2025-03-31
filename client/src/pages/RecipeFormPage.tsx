@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import apiClient from '../services/api.ts';
-import { RecipeSummary } from '../types/index.ts'; // Import Tag type if needed separately
+import { RecipeSummary, Tag } from '../types/index.ts'; // Import Tag type if needed separately
 
 // Define interfaces for form sub-items
 interface IngredientInput {
@@ -234,7 +234,13 @@ const RecipeFormPage: React.FC<RecipeFormPageProps> = ({ mode }) => {
 
     // Render loading state while fetching for edit mode
     if (isFetching) {
-         return <div className="text-center py-10">Loading recipe details...</div>;
+        // Replace text with centered spinner
+        return (
+            <div className="flex justify-center items-center py-10 min-h-[300px]">
+                {/* Tailwind CSS Spinner */}
+                <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-300 border-t-gray-700"></div>
+            </div>
+       );
     }
 
     return (
@@ -260,7 +266,7 @@ const RecipeFormPage: React.FC<RecipeFormPageProps> = ({ mode }) => {
                         required
                         value={formData.name}
                         onChange={handleInputChange}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm"
                     />
                 </div>
 
@@ -273,7 +279,7 @@ const RecipeFormPage: React.FC<RecipeFormPageProps> = ({ mode }) => {
                         rows={3}
                         value={formData.description}
                         onChange={handleInputChange}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm"
                     />
                 </div>
 
@@ -289,7 +295,7 @@ const RecipeFormPage: React.FC<RecipeFormPageProps> = ({ mode }) => {
                          type="checkbox"
                          checked={formData.isPublic}
                          onChange={handleInputChange}
-                         className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                         className="h-4 w-4 text-gray-600 border-gray-300 rounded focus:ring-gray-500"
                      />
                      <label htmlFor="isPublic" className="ml-2 block text-sm text-gray-900">
                          Make recipe public (shareable)
@@ -312,7 +318,7 @@ const RecipeFormPage: React.FC<RecipeFormPageProps> = ({ mode }) => {
                                         required
                                         value={ingredient.name}
                                         onChange={(e) => handleIngredientChange(index, 'name', e.target.value)}
-                                        className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                        className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm"
                                     />
                                 </div>
                                 <div className="flex-1 w-full sm:w-auto">
@@ -324,14 +330,14 @@ const RecipeFormPage: React.FC<RecipeFormPageProps> = ({ mode }) => {
                                         required
                                         value={ingredient.measure}
                                         onChange={(e) => handleIngredientChange(index, 'measure', e.target.value)}
-                                        className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                        className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm"
                                     />
                                 </div>
                                 <button
                                     type="button"
                                     onClick={() => removeIngredient(index)}
                                     disabled={formData.ingredients.length <= 1}
-                                    className="mt-1 sm:mt-0 px-3 py-2 text-sm font-medium text-white bg-red-600 rounded hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="mt-1 sm:mt-0 px-3 py-2 text-sm font-medium text-white bg-gray-500 rounded hover:bg-gray-600 text-white disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     Remove
                                 </button>
@@ -341,7 +347,7 @@ const RecipeFormPage: React.FC<RecipeFormPageProps> = ({ mode }) => {
                     <button
                         type="button"
                         onClick={addIngredient}
-                        className="mt-3 px-3 py-1 text-sm font-medium text-white bg-green-600 rounded hover:bg-green-700"
+                        className="mt-3 px-3 py-1 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700 text-white"
                     >
                         + Add Ingredient
                     </button>
@@ -363,14 +369,14 @@ const RecipeFormPage: React.FC<RecipeFormPageProps> = ({ mode }) => {
                                          required
                                          value={step.description}
                                          onChange={(e) => handleStepChange(index, e.target.value)}
-                                         className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                         className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm"
                                      />
                                  </div>
                                  <button
                                      type="button"
                                      onClick={() => removeStep(index)}
                                      disabled={formData.steps.length <= 1}
-                                     className="mt-1 px-3 py-2 text-sm font-medium text-white bg-red-600 rounded hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                                     className="mt-1 px-3 py-2 text-sm font-medium text-white bg-gray-500 rounded hover:bg-gray-600 text-white disabled:opacity-50 disabled:cursor-not-allowed"
                                  >
                                      Remove
                                  </button>
@@ -380,7 +386,7 @@ const RecipeFormPage: React.FC<RecipeFormPageProps> = ({ mode }) => {
                      <button
                          type="button"
                          onClick={addStep}
-                         className="mt-3 px-3 py-1 text-sm font-medium text-white bg-green-600 rounded hover:bg-green-700"
+                         className="mt-3 px-3 py-1 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700 text-white"
                      >
                          + Add Step
                      </button>
@@ -397,17 +403,17 @@ const RecipeFormPage: React.FC<RecipeFormPageProps> = ({ mode }) => {
                              value={tagInput}
                              onChange={handleTagInputChange}
                              onKeyDown={handleTagInputKeyDown}
-                             className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm mb-2"
+                             className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm mb-2"
                              placeholder="e.g., quick, vegan, dessert"
                          />
                          <div className="flex flex-wrap gap-2">
                              {formData.tags.map((tag, index) => (
-                                 <span key={index} className="flex items-center bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-0.5 rounded">
+                                 <span key={index} className="flex items-center bg-gray-200 text-gray-700 text-sm font-medium px-2.5 py-0.5 rounded">
                                      {tag}
                                      <button
                                          type="button"
                                          onClick={() => removeTag(tag)}
-                                         className="ml-1.5 text-blue-600 hover:text-blue-800 font-bold"
+                                         className="ml-1.5 text-gray-600 hover:text-black font-bold"
                                          aria-label={`Remove ${tag} tag`}
                                      >
                                          × {/* Multiplication sign as 'x' */}
@@ -425,14 +431,14 @@ const RecipeFormPage: React.FC<RecipeFormPageProps> = ({ mode }) => {
                          <button
                              type="button"
                              onClick={() => navigate(-1)} // Go back to previous page
-                             className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                             className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                          >
                              Cancel
                          </button>
                         <button
                             type="submit"
                             disabled={isLoading || isFetching}
-                            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+                            className="px-4 py-2 text-sm font-medium text-white bg-gray-700 border border-transparent rounded-md shadow-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
                         >
                             {isLoading ? 'Saving...' : (mode === 'create' ? 'Create Recipe' : 'Save Changes')}
                         </button>

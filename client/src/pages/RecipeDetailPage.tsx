@@ -67,14 +67,20 @@ const RecipeDetailPage: React.FC = () => {
     // --- Render Logic ---
 
     if (isLoading) {
-        return <div className="text-center py-10">Loading recipe...</div>;
+        // Replace text with centered spinner
+        return (
+            <div className="flex justify-center items-center py-10 min-h-[300px]">
+                 {/* Tailwind CSS Spinner */}
+                 <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-300 border-t-gray-700"></div>
+            </div>
+        );
     }
 
     if (error) {
         return (
             <div className="text-center py-10 text-red-600 bg-red-100 p-4 rounded border border-red-400">
                 <p>{error}</p>
-                <Link to="/" className="mt-2 inline-block text-blue-600 hover:text-blue-800 font-medium">
+                <Link to="/" className="mt-2 inline-block text-gray-600 hover:text-black font-medium">
                     Go to Dashboard
                 </Link>
             </div>
@@ -108,7 +114,7 @@ const RecipeDetailPage: React.FC = () => {
                         {recipe.tags.map((tag: Tag) => (
                             <span
                                 key={tag.id}
-                                className="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-0.5 rounded"
+                                className="bg-gray-200 text-gray-700 text-sm font-medium px-2.5 py-0.5 rounded"
                             >
                                 {tag.name}
                             </span>
@@ -119,13 +125,13 @@ const RecipeDetailPage: React.FC = () => {
                  <div className="flex gap-4 items-center mt-3">
                     <Link
                          to={`/recipes/${recipe.id}/edit`}
-                         className="inline-block px-4 py-2 text-sm font-medium text-white bg-green-600 rounded hover:bg-green-700"
+                         className="inline-block px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700"
                      >
                          Edit Recipe
                      </Link>
                      <button
                         onClick={handleShare}
-                        className="inline-block px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700"
+                        className="inline-block px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700"
                         title="Copy link to share"
                      >
                          Share

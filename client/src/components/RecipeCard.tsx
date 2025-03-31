@@ -58,7 +58,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
                         {recipe.tags.map((tag: Tag) => (
                             <span
                                 key={tag.id}
-                                className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded"
+                                className="bg-gray-200 text-gray-700 text-xs font-medium px-2.5 py-0.5 rounded"
                             >
                                 {tag.name}
                             </span>
@@ -70,20 +70,20 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
                 <div className="mt-auto flex justify-between items-center pt-2 border-t border-gray-200">
                     <Link
                         to={`/recipes/${recipe.id}`}
-                        className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                        className="text-gray-600 hover:text-black text-sm font-medium"
                     >
                         View Details
                     </Link>
                     <div>
                          <Link
                              to={`/recipes/${recipe.id}/edit`}
-                             className="text-green-600 hover:text-green-800 text-sm font-medium mr-3"
+                             className="text-gray-600 hover:text-black text-sm font-medium mr-3"
                          >
                              Edit
                          </Link>
                          <button
                              onClick={handleDelete}
-                             className="text-red-600 hover:text-red-800 text-sm font-medium"
+                             className="text-gray-500 hover:text-red-700 text-sm font-medium"
                          >
                              Delete
                          </button>

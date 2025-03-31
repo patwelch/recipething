@@ -39,7 +39,7 @@ const DashboardPage: React.FC = () => {
                 <h1 className="text-3xl font-bold">My Recipes</h1>
                 <Link
                     to="/recipes/new"
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    className="bg-gray-700 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded"
                 >
                     + Create New Recipe
                 </Link>
@@ -73,7 +73,7 @@ const DashboardPage: React.FC = () => {
                      <button
                          type="submit"
                          disabled={isLoading}
-                         className="w-full sm:w-auto px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
+                         className="w-full sm:w-auto px-4 py-2 text-sm font-medium text-white bg-gray-600 border border-transparent rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 focus:ring-offset-gray-100 disabled:opacity-50"
                      >
                          Search
                      </button>
@@ -90,9 +90,9 @@ const DashboardPage: React.FC = () => {
 
             {/* Loading State */}
             {isLoading && (
-                <div className="text-center py-10">
-                    <p>Loading recipes...</p>
-                    {/* Add a spinner animation here later */}
+                <div className="flex justify-center items-center py-10">
+                     {/* Tailwind CSS Spinner */}
+                     <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-300 border-t-gray-700"></div>
                 </div>
             )}
 
@@ -102,7 +102,7 @@ const DashboardPage: React.FC = () => {
                     <p>Error loading recipes: {error}</p>
                     <button
                          onClick={() => dispatch(fetchUserRecipes())} // Allow retry
-                         className="mt-2 px-3 py-1 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700"
+                         className="mt-2 px-3 py-1 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700"
                      >
                          Retry
                      </button>
@@ -124,7 +124,7 @@ const DashboardPage: React.FC = () => {
                      <p>You haven't created any recipes yet.</p>
                      <Link
                          to="/recipes/new"
-                         className="mt-2 inline-block text-blue-600 hover:text-blue-800 font-medium"
+                         className="mt-2 inline-block text-gray-600 hover:text-black font-medium"
                      >
                          Create your first recipe!
                      </Link>
